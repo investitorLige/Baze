@@ -1,5 +1,7 @@
 package lab.global;
 
+import lab.core.nav.NavigationController;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
@@ -15,6 +17,9 @@ public class MainFrame extends JFrame {
         setSize(1200, 700);
         setLocationRelativeTo(null);
         setContentPane(contentPanel);
+
+        NavigationController.getInstance().setMainFrame(this);
+        NavigationController.getInstance().showLoginView();
     }
 
     public void showView(JPanel view) {
