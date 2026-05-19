@@ -23,9 +23,9 @@ public class LoginView extends JPanel {
         controller = AuthController.getInstance();
         usernameField = new JTextField(20);
         passwordField = new JPasswordField(20);
-        loginButton = new JButton("Login");
+        loginButton = new JButton("Prijavi se");
         loginButton.addActionListener(event -> controller.loginUser(getUsername(), getPassword()));
-        goToRegisterButton = new JButton("Don't have an account?");
+        goToRegisterButton = new JButton("Napravi nalog");
         goToRegisterButton.addActionListener(event -> controller.showRegisterView());
 
         setLayout(new BorderLayout());
@@ -40,14 +40,14 @@ public class LoginView extends JPanel {
 
         constraints.gridx = 0;
         constraints.gridy = 0;
-        formPanel.add(new JLabel("Username:"), constraints);
+        formPanel.add(new JLabel("Korisnicko ime:"), constraints);
 
         constraints.gridx = 1;
         formPanel.add(usernameField, constraints);
 
         constraints.gridx = 0;
         constraints.gridy = 1;
-        formPanel.add(new JLabel("Password:"), constraints);
+        formPanel.add(new JLabel("Lozinka:"), constraints);
 
         constraints.gridx = 1;
         formPanel.add(passwordField, constraints);

@@ -35,6 +35,12 @@ Possible subthemes include chemistry, physics, biology, geology, astronomy/astro
 
 This repository appears to target psychology experiments.
 
+## Local Project Direction
+
+This application is implemented only from the researcher's perspective. Every interactive user is an `ISTRAZIVAC`; there are no administrator or external-user workflows in the app UI. Other users, supporting entities, and lookup/reference tables are treated as already populated automatically through seed data or database setup, not through separate application roles.
+
+All database table names, column names, Java model fields that mirror database attributes, and visible form labels should use Serbian names from the relational schema. Do not invent English field names when the schema already provides Serbian names.
+
 ## Database Requirements
 
 The database must contain:

@@ -5,6 +5,8 @@ import lab.features.auth.models.LoginModel;
 import lab.features.auth.models.RegisterModel;
 
 import javax.swing.JOptionPane;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 
 public class AuthController {
@@ -36,69 +38,109 @@ public class AuthController {
         Arrays.fill(password, '\0');
 
         if (normalizedUsername.isBlank() || passwordText.isBlank()) {
-            JOptionPane.showMessageDialog(null, "Username and password are required.");
+            JOptionPane.showMessageDialog(null, "Korisnicko ime i lozinka su obavezni.");
             return false;
         }
 
         boolean loggedIn = loginModel.login(normalizedUsername, passwordText);
         if (loggedIn) {
-            JOptionPane.showMessageDialog(null, "Login successful.");
+            JOptionPane.showMessageDialog(null, "Prijava uspesna.");
             return true;
         }
 
-        JOptionPane.showMessageDialog(null, "Invalid username or password.");
+        JOptionPane.showMessageDialog(null, "Neispravno korisnicko ime ili lozinka.");
         return false;
     }
 
     public boolean registerUser(
-            String firstName,
-            String lastName,
-            String username,
-            String role,
+            String ime,
+            String prezime,
+            String datumRodjenja,
+            String email,
+            String tel,
+            String korisnickoIme,
+            String titula,
+            String specijalizacija,
+            String godineIskustva,
+            String institucija,
             char[] password,
             char[] confirmedPassword
     ) {
-        String normalizedFirstName = firstName.trim();
-        String normalizedLastName = lastName.trim();
-        String normalizedUsername = username.trim();
+        String normalizedIme = ime.trim();
+        String normalizedPrezime = prezime.trim();
+        String normalizedDatumRodjenja = datumRodjenja.trim();
+        String normalizedEmail = email.trim();
+        String normalizedTel = tel.trim();
+        String normalizedKorisnickoIme = korisnickoIme.trim();
+        String normalizedTitula = titula.trim();
+        String normalizedSpecijalizacija = specijalizacija.trim();
+        String normalizedGodineIskustva = godineIskustva.trim();
+        String normalizedInstitucija = institucija.trim();
         String passwordText = String.valueOf(password);
         String confirmedPasswordText = String.valueOf(confirmedPassword);
         Arrays.fill(password, '\0');
         Arrays.fill(confirmedPassword, '\0');
 
         if (
-                normalizedFirstName.isBlank()
-                        || normalizedLastName.isBlank()
-                        || normalizedUsername.isBlank()
-                        || role == null
-                        || role.isBlank()
+                normalizedIme.isBlank()
+                        || normalizedPrezime.isBlank()
+                        || normalizedDatumRodjenja.isBlank()
+                        || normalizedEmail.isBlank()
+                        || normalizedKorisnickoIme.isBlank()
                         || passwordText.isBlank()
                         || confirmedPasswordText.isBlank()
         ) {
-            JOptionPane.showMessageDialog(null, "All fields are required.");
+            JOptionPane.showMessageDialog(null, "Sva polja su obavezna.");
+            return false;
+        }
+
+        Integer parsedGodineIskustva = null;
+        if (!normalizedGodineIskustva.isBlank()) {
+            try {
+                parsedGodineIskustva = Integer.parseInt(normalizedGodineIskustva);
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Godine iskustva moraju biti ceo broj.");
+                return false;
+            }
+        }
+
+        try {
+            LocalDate.parse(normalizedDatumRodjenja);
+        } catch (DateTimeParseException e) {
+            JOptionPane.showMessageDialog(null, "Datum rodjenja mora biti u formatu yyyy-MM-dd.");
             return false;
         }
 
         if (!passwordText.equals(confirmedPasswordText)) {
-            JOptionPane.showMessageDialog(null, "Passwords do not match.");
+            JOptionPane.showMessageDialog(null, "Lozinke se ne poklapaju.");
             return false;
         }
 
         boolean registered = registerModel.register(
-                normalizedFirstName,
-                normalizedLastName,
-                normalizedUsername,
-                role,
+                normalizedIme,
+                normalizedPrezime,
+                normalizedDatumRodjenja,
+                normalizedEmail,
+                blankToNull(normalizedTel),
+                normalizedKorisnickoIme,
+                blankToNull(normalizedTitula),
+                blankToNull(normalizedSpecijalizacija),
+                parsedGodineIskustva,
+                blankToNull(normalizedInstitucija),
                 passwordText
         );
 
         if (registered) {
-            JOptionPane.showMessageDialog(null, "Registration successful.");
+            JOptionPane.showMessageDialog(null, "Registracija uspesna.");
             showLoginView();
             return true;
         }
 
-        JOptionPane.showMessageDialog(null, "Registration failed.");
+        JOptionPane.showMessageDialog(null, "Registracija nije uspela.");
         return false;
+    }
+
+    private String blankToNull(String value) {
+        return value.isBlank() ? null : value;
     }
 }

@@ -7,23 +7,46 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Types;
 
 public class RegisterModel {
-    public boolean register(String firstName, String lastName, String username, String role, String password) {
+    public boolean register(
+            String ime,
+            String prezime,
+            String datumRodjenja,
+            String email,
+            String tel,
+            String korisnickoIme,
+            String titula,
+            String specijalizacija,
+            Integer godineIskustva,
+            String institucija,
+            String password
+    ) {
         try (Connection connection = DatabaseConnection.getConnection()) {
-            AuthSchema.ensureUsersTableExists(connection);
+            AuthSchema.ensureResearchersTableExists(connection);
             connection.setAutoCommit(false);
 
-            try (PreparedStatement statement = connection.prepareStatement(AuthQueries.REGISTER_USER)) {
-                statement.setString(1, firstName);
-                statement.setString(2, lastName);
-                statement.setString(3, username);
-                statement.setString(4, role);
-                statement.setString(5, password);
+            try (PreparedStatement statement = connection.prepareStatement(AuthQueries.REGISTER_RESEARCHER)) {
+                statement.setString(1, ime);
+                statement.setString(2, prezime);
+                statement.setString(3, datumRodjenja);
+                statement.setString(4, email);
+                statement.setString(5, tel);
+                statement.setString(6, korisnickoIme);
+                statement.setString(7, password);
+                statement.setString(8, titula);
+                statement.setString(9, specijalizacija);
+                if (godineIskustva == null) {
+                    statement.setNull(10, Types.INTEGER);
+                } else {
+                    statement.setInt(10, godineIskustva);
+                }
+                statement.setString(11, institucija);
 
                 int insertedRows = statement.executeUpdate();
                 if (insertedRows == 1) {
-                    UserCredentialsFile.append(username, password);
+                    UserCredentialsFile.append(korisnickoIme, password);
                     connection.commit();
                     return true;
                 }

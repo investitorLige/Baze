@@ -3,7 +3,6 @@ package lab.features.auth.views;
 import lab.features.auth.controllers.AuthController;
 
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
@@ -15,10 +14,16 @@ import java.awt.Insets;
 
 public class RegisterView extends JPanel {
     private final AuthController controller;
-    private final JTextField firstNameField;
-    private final JTextField lastNameField;
-    private final JTextField usernameField;
-    private final JComboBox<String> roleComboBox;
+    private final JTextField imeField;
+    private final JTextField prezimeField;
+    private final JTextField datumRodjenjaField;
+    private final JTextField emailField;
+    private final JTextField telField;
+    private final JTextField korisnickoImeField;
+    private final JTextField titulaField;
+    private final JTextField specijalizacijaField;
+    private final JTextField godineIskustvaField;
+    private final JTextField institucijaField;
     private final JPasswordField passwordField;
     private final JPasswordField confirmPasswordField;
     private final JButton registerButton;
@@ -26,22 +31,34 @@ public class RegisterView extends JPanel {
 
     public RegisterView() {
         controller = AuthController.getInstance();
-        firstNameField = new JTextField(20);
-        lastNameField = new JTextField(20);
-        usernameField = new JTextField(20);
-        roleComboBox = new JComboBox<>(new String[] {"Researcher", "Admin", "External user"});
+        imeField = new JTextField(20);
+        prezimeField = new JTextField(20);
+        datumRodjenjaField = new JTextField(20);
+        emailField = new JTextField(20);
+        telField = new JTextField(20);
+        korisnickoImeField = new JTextField(20);
+        titulaField = new JTextField(20);
+        specijalizacijaField = new JTextField(20);
+        godineIskustvaField = new JTextField(20);
+        institucijaField = new JTextField(20);
         passwordField = new JPasswordField(20);
         confirmPasswordField = new JPasswordField(20);
-        registerButton = new JButton("Register");
+        registerButton = new JButton("Registruj se");
         registerButton.addActionListener(event -> controller.registerUser(
-                getFirstName(),
-                getLastName(),
-                getUsername(),
-                getRole(),
+                getIme(),
+                getPrezime(),
+                getDatumRodjenja(),
+                getEmail(),
+                getTel(),
+                getKorisnickoIme(),
+                getTitula(),
+                getSpecijalizacija(),
+                getGodineIskustva(),
+                getInstitucija(),
                 getPassword(),
                 getConfirmedPassword()
         ));
-        backToLoginButton = new JButton("Back to login");
+        backToLoginButton = new JButton("Nazad na prijavu");
         backToLoginButton.addActionListener(event -> controller.showLoginView());
 
         setLayout(new BorderLayout());
@@ -56,48 +73,90 @@ public class RegisterView extends JPanel {
 
         constraints.gridx = 0;
         constraints.gridy = 0;
-        formPanel.add(new JLabel("First name:"), constraints);
+        formPanel.add(new JLabel("Ime:"), constraints);
 
         constraints.gridx = 1;
-        formPanel.add(firstNameField, constraints);
+        formPanel.add(imeField, constraints);
 
         constraints.gridx = 0;
         constraints.gridy = 1;
-        formPanel.add(new JLabel("Last name:"), constraints);
+        formPanel.add(new JLabel("Prezime:"), constraints);
 
         constraints.gridx = 1;
-        formPanel.add(lastNameField, constraints);
+        formPanel.add(prezimeField, constraints);
 
         constraints.gridx = 0;
         constraints.gridy = 2;
-        formPanel.add(new JLabel("Username:"), constraints);
+        formPanel.add(new JLabel("Datum rodjenja:"), constraints);
 
         constraints.gridx = 1;
-        formPanel.add(usernameField, constraints);
+        formPanel.add(datumRodjenjaField, constraints);
 
         constraints.gridx = 0;
         constraints.gridy = 3;
-        formPanel.add(new JLabel("Role:"), constraints);
+        formPanel.add(new JLabel("Email:"), constraints);
 
         constraints.gridx = 1;
-        formPanel.add(roleComboBox, constraints);
+        formPanel.add(emailField, constraints);
 
         constraints.gridx = 0;
         constraints.gridy = 4;
-        formPanel.add(new JLabel("Password:"), constraints);
+        formPanel.add(new JLabel("Tel:"), constraints);
+
+        constraints.gridx = 1;
+        formPanel.add(telField, constraints);
+
+        constraints.gridx = 0;
+        constraints.gridy = 5;
+        formPanel.add(new JLabel("Korisnicko ime:"), constraints);
+
+        constraints.gridx = 1;
+        formPanel.add(korisnickoImeField, constraints);
+
+        constraints.gridx = 0;
+        constraints.gridy = 6;
+        formPanel.add(new JLabel("Titula:"), constraints);
+
+        constraints.gridx = 1;
+        formPanel.add(titulaField, constraints);
+
+        constraints.gridx = 0;
+        constraints.gridy = 7;
+        formPanel.add(new JLabel("Specijalizacija:"), constraints);
+
+        constraints.gridx = 1;
+        formPanel.add(specijalizacijaField, constraints);
+
+        constraints.gridx = 0;
+        constraints.gridy = 8;
+        formPanel.add(new JLabel("Godine iskustva:"), constraints);
+
+        constraints.gridx = 1;
+        formPanel.add(godineIskustvaField, constraints);
+
+        constraints.gridx = 0;
+        constraints.gridy = 9;
+        formPanel.add(new JLabel("Institucija:"), constraints);
+
+        constraints.gridx = 1;
+        formPanel.add(institucijaField, constraints);
+
+        constraints.gridx = 0;
+        constraints.gridy = 10;
+        formPanel.add(new JLabel("Lozinka:"), constraints);
 
         constraints.gridx = 1;
         formPanel.add(passwordField, constraints);
 
         constraints.gridx = 0;
-        constraints.gridy = 5;
-        formPanel.add(new JLabel("Confirm password:"), constraints);
+        constraints.gridy = 11;
+        formPanel.add(new JLabel("Potvrda lozinke:"), constraints);
 
         constraints.gridx = 1;
         formPanel.add(confirmPasswordField, constraints);
 
         constraints.gridx = 0;
-        constraints.gridy = 6;
+        constraints.gridy = 12;
         formPanel.add(registerButton, constraints);
 
         constraints.gridx = 1;
@@ -110,20 +169,44 @@ public class RegisterView extends JPanel {
         return controller;
     }
 
-    public String getFirstName() {
-        return firstNameField.getText();
+    public String getIme() {
+        return imeField.getText();
     }
 
-    public String getLastName() {
-        return lastNameField.getText();
+    public String getPrezime() {
+        return prezimeField.getText();
     }
 
-    public String getUsername() {
-        return usernameField.getText();
+    public String getDatumRodjenja() {
+        return datumRodjenjaField.getText();
     }
 
-    public String getRole() {
-        return (String) roleComboBox.getSelectedItem();
+    public String getEmail() {
+        return emailField.getText();
+    }
+
+    public String getTel() {
+        return telField.getText();
+    }
+
+    public String getKorisnickoIme() {
+        return korisnickoImeField.getText();
+    }
+
+    public String getTitula() {
+        return titulaField.getText();
+    }
+
+    public String getSpecijalizacija() {
+        return specijalizacijaField.getText();
+    }
+
+    public String getGodineIskustva() {
+        return godineIskustvaField.getText();
+    }
+
+    public String getInstitucija() {
+        return institucijaField.getText();
     }
 
     public char[] getPassword() {

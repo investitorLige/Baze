@@ -11,9 +11,9 @@ import java.sql.SQLException;
 public class LoginModel {
     public boolean login(String username, String password) {
         try (Connection connection = DatabaseConnection.getConnection()) {
-            AuthSchema.ensureUsersTableExists(connection);
+            AuthSchema.ensureResearchersTableExists(connection);
 
-            try (PreparedStatement statement = connection.prepareStatement(AuthQueries.LOGIN_USER)) {
+            try (PreparedStatement statement = connection.prepareStatement(AuthQueries.LOGIN_RESEARCHER)) {
                 statement.setString(1, username);
                 statement.setString(2, password);
 

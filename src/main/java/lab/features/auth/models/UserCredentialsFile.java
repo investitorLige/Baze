@@ -5,6 +5,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.util.List;
 
 final class UserCredentialsFile {
     private static final Path USERS_FILE = Path.of("src", "main", "resources", "users.txt");
@@ -23,5 +24,15 @@ final class UserCredentialsFile {
                 StandardOpenOption.CREATE,
                 StandardOpenOption.APPEND
         );
+    }
+
+    static boolean contains(String username, String password) throws IOException {
+        if (!Files.exists(USERS_FILE)) {
+            return false;
+        }
+
+        String expectedLine = username + ":" + password;
+        List<String> lines = Files.readAllLines(USERS_FILE, StandardCharsets.UTF_8);
+        return lines.stream().anyMatch(expectedLine::equals);
     }
 }
