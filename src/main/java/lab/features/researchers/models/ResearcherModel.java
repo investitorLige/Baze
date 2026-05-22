@@ -8,7 +8,6 @@ public class ResearcherModel {
     private final String email;
     private final String tel;
     private final String korisnickoIme;
-    private final String password;
     private final String titula;
     private final String specijalizacija;
     private final Integer godineIskustva;
@@ -22,7 +21,6 @@ public class ResearcherModel {
             String email,
             String tel,
             String korisnickoIme,
-            String password,
             String titula,
             String specijalizacija,
             Integer godineIskustva,
@@ -35,7 +33,6 @@ public class ResearcherModel {
         this.email = email;
         this.tel = tel;
         this.korisnickoIme = korisnickoIme;
-        this.password = password;
         this.titula = titula;
         this.specijalizacija = specijalizacija;
         this.godineIskustva = godineIskustva;
@@ -68,10 +65,6 @@ public class ResearcherModel {
 
     public String getKorisnickoIme() {
         return korisnickoIme;
-    }
-
-    public String getPassword() {
-        return password;
     }
 
     public String getTitula() {

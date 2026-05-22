@@ -34,15 +34,14 @@ public class RegisterModel {
                 statement.setString(4, email);
                 statement.setString(5, tel);
                 statement.setString(6, korisnickoIme);
-                statement.setString(7, password);
-                statement.setString(8, titula);
-                statement.setString(9, specijalizacija);
+                statement.setString(7, titula);
+                statement.setString(8, specijalizacija);
                 if (godineIskustva == null) {
-                    statement.setNull(10, Types.INTEGER);
+                    statement.setNull(9, Types.INTEGER);
                 } else {
-                    statement.setInt(10, godineIskustva);
+                    statement.setInt(9, godineIskustva);
                 }
-                statement.setString(11, institucija);
+                statement.setString(10, institucija);
 
                 int insertedRows = statement.executeUpdate();
                 if (insertedRows == 1) {

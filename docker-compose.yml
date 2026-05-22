@@ -5,7 +5,7 @@ services:
     restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: lab_experiments
+      MYSQL_DATABASE: psihologija_lab
     ports:
       - "3306:3306"
     volumes:

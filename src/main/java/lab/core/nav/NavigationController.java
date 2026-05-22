@@ -2,6 +2,7 @@ package lab.core.nav;
 
 import lab.features.auth.views.LoginView;
 import lab.features.auth.views.RegisterView;
+import lab.global.DashboardView;
 import lab.global.MainFrame;
 
 public class NavigationController {
@@ -26,5 +27,9 @@ public class NavigationController {
 
     public void showRegisterView() {
         mainFrame.showView(new RegisterView());
+    }
+
+    public void showDashboardView() {
+        mainFrame.showView(new DashboardView());
     }
 }

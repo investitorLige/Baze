@@ -33,7 +33,18 @@ Each team gets a subtheme and must define concrete functional requirements for:
 
 Possible subthemes include chemistry, physics, biology, geology, astronomy/astrophysics, electrical engineering, mechanical engineering, psychology, economics, sociology, pedagogy/education, pharmacology, clinical research, neuroscience, and cognitive science.
 
-This repository appears to target psychology experiments.
+This repository targets psychology experiments.
+
+## Implemented Database Schema Baseline
+
+The active database name is `psihologija_lab` with `utf8mb4` / `utf8mb4_unicode_ci`.
+
+The application should create the project schema automatically when it first connects to the database, using the supplied 25-table relational model:
+`LABORATORIJA`, `RESURS`, `TIP_ALATA`, `ISTRAZIVAC`, `TEORIJA`, `EKSPERIMENT`, `UPITNIK`, `ETICKI_ODBOR`, `ALAT`, `IZVODJENJE`, `SESIJA`, `ISPITANIK`, `PROTOKOL`, `KVALIFIKACIJA`, `ODOBRENJE`, `POTREBAN_RESURS`, `POTREBAN_ALAT`, `KORISCEN_UPITNIK`, `INVENTAR_LABORATORIJE`, `DIZAJNER`, `TIM_IZVODJACA`, `UPOTREBA_RESURSA`, `UPOTREBA_ALATA`, `UCESCE`, and `REZULTAT_UPITNIKA`.
+
+The supplied database objects include view `pregled_eksperimenata` and procedure `zakazi_sesiju`. `pregled_eksperimenata` joins experiments, theories, designers, executions, sessions, and attendance with `GROUP BY` and `HAVING`. `zakazi_sesiju` uses a transaction to prevent overlapping sessions in the same laboratory.
+
+The Java login/register implementation keeps `korisnicko_ime` in `ISTRAZIVAC` and stores login credentials in `src/main/resources/users.txt` as `korisnicko_ime:password`. The database schema should not add a `password` column to `ISTRAZIVAC`.
 
 ## Local Project Direction
 

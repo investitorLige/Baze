@@ -1,8 +1,10 @@
 package lab.features.auth.controllers;
 
 import lab.core.nav.NavigationController;
+import lab.core.session.UserSession;
 import lab.features.auth.models.LoginModel;
 import lab.features.auth.models.RegisterModel;
+import lab.features.researchers.models.ResearcherModel;
 
 import javax.swing.JOptionPane;
 import java.time.LocalDate;
@@ -42,9 +44,11 @@ public class AuthController {
             return false;
         }
 
-        boolean loggedIn = loginModel.login(normalizedUsername, passwordText);
-        if (loggedIn) {
+        ResearcherModel researcher = loginModel.login(normalizedUsername, passwordText);
+        if (researcher != null) {
+            UserSession.login(researcher);
             JOptionPane.showMessageDialog(null, "Prijava uspesna.");
+            NavigationController.getInstance().showDashboardView();
             return true;
         }
 
