@@ -8,7 +8,10 @@ import java.nio.file.StandardOpenOption;
 import java.util.List;
 
 final class UserCredentialsFile {
-    private static final Path USERS_FILE = Path.of("src", "main", "resources", "users.txt");
+    private static final Path USERS_FILE = Path.of(envOrDefault(
+            "USERS_FILE",
+            Path.of("src", "main", "resources", "users.txt").toString()
+    ));
 
     private UserCredentialsFile() {
     }
@@ -34,5 +37,10 @@ final class UserCredentialsFile {
         String expectedLine = username + ":" + password;
         List<String> lines = Files.readAllLines(USERS_FILE, StandardCharsets.UTF_8);
         return lines.stream().anyMatch(expectedLine::equals);
+    }
+
+    private static String envOrDefault(String name, String defaultValue) {
+        String value = System.getenv(name);
+        return value == null || value.isBlank() ? defaultValue : value;
     }
 }

@@ -4,3 +4,4 @@ target/
 .idea/
 .settings/
 .project
+./PROJECT_SPEC_CONTEXT.md

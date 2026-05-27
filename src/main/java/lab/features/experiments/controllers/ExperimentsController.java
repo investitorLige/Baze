@@ -39,10 +39,6 @@ public class ExperimentsController {
         return queryRows(ExperimentQueries.FIND_EXECUTIONS_BY_FILTERS, labId, labId, experimentId, experimentId);
     }
 
-    public List<Object[]> findSessionsByExecution(int executionId) {
-        return queryRows(ExperimentQueries.FIND_SESSIONS_BY_EXECUTION, executionId);
-    }
-
     public List<Object[]> findTheoryByExperiment(int experimentId) {
         return queryRows(ExperimentQueries.FIND_THEORY_BY_EXPERIMENT, experimentId);
     }
@@ -83,22 +79,6 @@ public class ExperimentsController {
         return queryRows(ExperimentQueries.FIND_TEAM_BY_EXECUTION, executionId);
     }
 
-    public List<Object[]> findParticipationBySession(int sessionId) {
-        return queryRows(ExperimentQueries.FIND_PARTICIPATION_BY_SESSION, sessionId);
-    }
-
-    public List<Object[]> findResultsBySession(int sessionId) {
-        return queryRows(ExperimentQueries.FIND_RESULTS_BY_SESSION, sessionId);
-    }
-
-    public List<Object[]> findUsedResourcesBySession(int sessionId) {
-        return queryRows(ExperimentQueries.FIND_USED_RESOURCES_BY_SESSION, sessionId);
-    }
-
-    public List<Object[]> findUsedToolsBySession(int sessionId) {
-        return queryRows(ExperimentQueries.FIND_USED_TOOLS_BY_SESSION, sessionId);
-    }
-
     public boolean updateExecutionStatus(int executionId, String status) {
         int researcherId = UserSession.getCurrentResearcherId();
 
@@ -118,39 +98,8 @@ public class ExperimentsController {
         }
     }
 
-    public boolean deleteSession(int sessionId) {
-        int researcherId = UserSession.getCurrentResearcherId();
-
-        try (Connection connection = DatabaseConnection.getConnection()) {
-            DatabaseSchema.ensureProjectSchemaExists(connection);
-
-            if (!canDeleteSession(connection, sessionId, researcherId)) {
-                return false;
-            }
-
-            try (PreparedStatement statement = connection.prepareStatement(ExperimentQueries.DELETE_SESSION)) {
-                statement.setInt(1, sessionId);
-                return statement.executeUpdate() == 1;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
     public List<Object[]> getExecutionReport(int executionId) {
         return queryRows(ExperimentQueries.EXECUTION_REPORT, executionId);
-    }
-
-    private boolean canDeleteSession(Connection connection, int sessionId, int researcherId) throws SQLException {
-        try (PreparedStatement statement = connection.prepareStatement(ExperimentQueries.CAN_DELETE_SESSION)) {
-            statement.setInt(1, sessionId);
-            statement.setInt(2, researcherId);
-
-            try (ResultSet resultSet = statement.executeQuery()) {
-                return resultSet.next() && resultSet.getInt("dozvoljeno") > 0;
-            }
-        }
     }
 
     private List<Object[]> queryRows(String sql, Object... parameters) {

@@ -10,6 +10,53 @@ services:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -uroot -proot --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  app:
+    build: .
+    container_name: lab-app
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_NAME: psihologija_lab
+      DB_USER: root
+      DB_PASSWORD: root
+      USERS_FILE: /app/data/users.txt
+      DISPLAY: ${DISPLAY}
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - app_users:/app/data
+
+  seed-db:
+    image: mysql:8.0
+    container_name: lab-seed-db
+    profiles:
+      - seed
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      MYSQL_PWD: root
+    volumes:
+      - ./sql/seed-random-data.sql:/seed-random-data.sql:ro
+      - ./docker/seed-users.txt:/seed-users.txt:ro
+      - app_users:/app/data
+    command:
+      - sh
+      - -c
+      - |
+        mysql -hmysql -uroot psihologija_lab < /seed-random-data.sql
+        touch /app/data/users.txt
+        cat /seed-users.txt >> /app/data/users.txt
+    restart: "no"
 
 volumes:
   mysql_data:
+  app_users:
